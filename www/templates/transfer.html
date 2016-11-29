@@ -1,0 +1,49 @@
+<ion-modal-view title="">
+
+    <div class="bar bar-header bar-light" style="background-color: #434858">
+        <span><img src="img/favicon-32x32.png" alt="UP" height="30px" width="60px"
+                   style="padding-left: 30px"></span>
+        <p class="title text-center" style="color: #f5f6fa;">Transfer Stock</p>
+        <button class="button button-clear pull-right" ng-click="closeTransfer()">
+            <i class="ion ion-ios-close" style="font-size: 30px; color: #f5f6fa"></i></button>
+    </div>
+    <ion-content  style="background-image: url('img/pos_bg.jpg');" class="has-header">
+
+        <ion-refresher
+                pulling-text="Pull to refresh..."
+                on-refresh="doRefresh()">
+        </ion-refresher>
+        <div class="card" style="padding-top: 10px">
+            <div class="list">
+                <div class="col" >
+                    <div class="item item-thumbnail-left">
+                        <img src="{{url}}/upload/inventory/{{prod.image_url}}">
+                        <h2 style="text-transform: capitalize">{{prod.item_name}}</h2>
+                        <p>Kshs. {{prod.product_price}}</p>
+                    </div>
+
+                    <form ng-submit="transferStock()">
+                        <label class="item item-select">
+                            <span>Select A Sale Rep.</span>
+                            <select ng-model="prod.sale_id">
+                                <option ng-repeat="item in sales" value="{{item.id}}">{{item.first_name}} {{item.last_name}}</option>
+                            </select>
+                        </label>
+
+                        <span class="padding">Available Quantity</span><br>
+                        <label class="item item-input">
+                            <input type="number" ng-model="prod.quantity" readonly>
+                        </label>
+
+                        <label class="item item-input">
+                            <input type="number" ng-model="prod.quantity_transfer" placeholder="Adjust Quantity">
+                        </label>
+                        <label class="item item-input">
+                            <button class="button button-calm btn-block" type="submit">Submit</button>
+                        </label>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

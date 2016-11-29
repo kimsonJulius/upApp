@@ -1,0 +1,47 @@
+<ion-view style="background-color: #f5f6fa;/* background-image: url('img/login-processes_2.png');  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; */">
+
+
+      <ion-content style="background-image: url('img/pos_bg_2.jpg');
+-webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;">
+          <ion-refresher
+                  pulling-text="Pull to refresh..."
+                  on-refresh="doRefresh()">
+          </ion-refresher>
+        <div class="row">
+          <div class="bar bar-header item-input-inset">
+            <label class="item-input-wrapper">
+              <i class="icon ion-ios-search placeholder-icon"></i>
+              <input type="search" placeholder="Search" ng-model="searchData">
+            </label>
+            </div>
+        </div>
+        <div class="row header">
+          <div class="col">Name</div>
+          <div class="col">Code</div>
+          <div class="col">Qty</div>
+          <div class="col">Actions</div>
+        </div>
+        <hr>
+        <div class="row" ng-repeat="data in inventory|filter:searchData">
+          <div class="col">{{data.item_name|limitTo:8}}</div>
+          <div class="col">{{data.product_code| limitTo:5}}</div>
+          <div class="col">{{data.quantity}}</div>
+          <div class="col">
+            <button class="button button-small" style="background-color: #434858; color: #f5f6fa;"
+                    ng-click="adjust($index)"><i class="ion ion-ios-compose" style="font-size: 20px"></i></button>
+            <!--<button class="button button-small button-calm" ng-click="ctrl.add($index)"><i class="icon ion-levels"></i></button>-->
+            <button class="button button-small" style="background-color: #434858; color: white" ng-click="transfer($index)"><i class="icon ion-arrow-swap"></i></button>
+           </div>
+        </div>
+      </ion-content>
+
+
+
+
+</ion-view>

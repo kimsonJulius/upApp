@@ -1,0 +1,24 @@
+<ion-view style="background-color: #f5f6fa;/* background-image: url('img/login-processes_2.png');  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; */">
+
+  <ion-content>
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+    </ion-refresher>
+
+    <ion-list>
+      <div class="item item-thumbnail-left" ng-repeat="c in customers">
+        <img src="img/profile.png" alt="">
+        <h2>{{c.first_name}} {{c.last_name}} </h2>
+        <p>{{c.phone_number}}</p>
+        <small>Customer since {{c.created_at}}</small>
+      </div>
+    </ion-list>
+  </ion-content>
+
+
+
+</ion-view>

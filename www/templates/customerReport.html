@@ -1,0 +1,38 @@
+<ion-view style="background-color: #f5f6fa;/* background-image: url('img/login-processes_2.png');  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; */">
+
+  <ion-content>
+
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+    </ion-refresher>
+
+    <ion-list class="list">
+      <ion-item ng-repeat="items in report" style="color: #f8f8f8">
+        <h2>Customer: {{items[0]['customer']}}</h2>
+        <p>Total Sales: {{getTotalPaid(items) | currency:"Kshs. "}}</p>
+        <p>Total Paid: {{getTotalSales(items) | currency:"Kshs. "}}</p>
+        <p>Total Discount: {{getTotalDisc(items) | currency:"Kshs. "}}</p>
+        <p>Total Amount Due: {{getTotalDue(items) | currency:"Kshs. "}}</p>
+        <!--<p>Total: Kshs {{getTotalT(items)}}</p>-->
+        <!--<div class="row" ng-init="show[] = false" ng-repeat="item in items" ng-show="s">
+
+        </div>-->
+
+      </ion-item>
+      <!--<ion-item ng-repeat="item in report" ng-show="report.length">
+        <h2>{{item.id}}</h2>
+        <p>{{item.created_at}}</p>
+      </ion-item>
+      <ion-item ng-hide="report.length" class="text-center">
+        No new notifications.
+      </ion-item>-->
+
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>

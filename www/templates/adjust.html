@@ -1,0 +1,35 @@
+<ion-modal-view title="">
+
+    <div class="bar bar-header bar-light" style="background-color: #434858">
+        <span><img src="img/favicon-32x32.png" alt="UP" height="30px" width="60px"
+                   style="padding-left: 30px"></span>
+        <p class="title text-center" style="color: #f5f6fa;">Adjust Inventory Qty</p>
+        <button class="button button-clear pull-right" ng-click="closeAdjustMod()">
+            <i class="ion ion-ios-close" style="font-size: 30px; color: #f5f6fa"></i></button>
+    </div>
+    <ion-content  style="background-image: url('img/pos_bg.jpg');" class="has-header">
+
+
+        <div class="card" style="padding-top: 10px">
+            <div class="list">
+                <div class="col" >
+                    <div class="item item-thumbnail-left">
+                        <img src="{{url}}/upload/inventory/{{prod.image_url}}">
+                        <h2 style="text-transform: capitalize">{{prod.item_name}}</h2>
+                        <p>Kshs. {{prod.product_price}}</p>
+                    </div>
+
+                    <div class="list">
+                        <label class="item item-input">
+                            <input type="number" ng-model="prod.quantity_adjust" placeholder="Adjust Quantity">
+                        </label>
+                        <label class="item item-input">
+                            <button class="button button-calm" ng-click="add()" type="button"> &nbsp; Add &nbsp;</button>
+                            <button class="button button-assertive" ng-click="subtract()" type="button">Subtract</button>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ion-content>
+</ion-modal-view>

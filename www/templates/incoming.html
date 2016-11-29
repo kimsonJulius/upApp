@@ -1,0 +1,34 @@
+<ion-view style="background-color: #f5f6fa;/* background-image: url('img/login-processes_2.png');  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; */">
+
+  <ion-content style="background-color: #f5f6fa">
+      <ion-refresher
+              pulling-text="Pull to refresh..."
+              on-refresh="doRefresh()">
+      </ion-refresher>
+    <ion-list class="list">
+        <div class="row">
+            <span class="col">Product</span>
+            <span class="col">Qty</span>
+            <span class="col">Status</span>
+            <span class="col">Action</span>
+        </div>
+        <ion-item ng-repeat="item in incoming" class="row">
+            <span class="col">{{item.item_name|limitTo:13}}</span>
+            <span class="col">{{item.quantity}}</span>
+            <span class="col">{{item.status}}</span>
+            <span class="col"><button class="button button-small" style="background-color: #434858; color: white" type="button" ng-click="Accept(item.id)">Accept</button>
+                              <button class="button button-small" style="background-color: #434858; color: white" type="button"  ng-click="Reject(item.id)">Reject</button>
+            </span>
+        </ion-item>
+      <ion-item ng-hide="incoming.length" class="text-center">
+        No Incoming Stock.
+      </ion-item>
+
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>

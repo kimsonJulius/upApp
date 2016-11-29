@@ -1,0 +1,35 @@
+ <ion-modal-view title="">
+         <div class="bar bar-header bar-light">
+             <p>Receipt Preview</p> <button class="button button-clear pull-right" ng-click="closeRec()">Close</button>
+         </div>
+     <ion-content class="has-header">
+
+         <div class="bar bar-header item-input-inset">
+             <label class="item-input-wrapper">
+                 <i class="icon ion-ios-search placeholder-icon"></i>
+                 <input type="search" placeholder="Search for customer" ng-model="searchProd">
+             </label>
+         </div>
+
+         <div class="card" style="padding-top: 10px;">
+             <h2>UzaPoint</h2>
+             <p>PO. Box 4916 00506, Nairobi</p>
+             <p>Date: {{{{Date.now() | date:'yyyy-MM-dd'}}}}</p>
+             <p>Receipt</p>
+             <div class="padding" style="text-align: left">
+                 <p ng-repeat="item in shoppingList">
+                     <span class="col">{{item.item_name}}</span>
+                     <span class="col">* {{item.quantity}}</span>
+                     <span class="col">Unit Price Kshs.{{item.product_price}}</span>
+                 </p>
+             </div>
+             <div class="padding" style="text-align: left">
+                 <p>
+                     <span class="col"></span>
+                     <span class="col"></span>
+                     <span class="col">Total Kshs. {{sale.TotalAmount}}</span>
+                 </p>
+             </div>
+         </div>
+     </ion-content>
+</ion-modal-view>

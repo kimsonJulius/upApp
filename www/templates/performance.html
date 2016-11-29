@@ -1,0 +1,53 @@
+<ion-view style="background-color: #f5f6fa;/* background-image: url('img/login-processes_2.png');  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; */">
+
+  <ion-content>
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-list class="list" ng-init="viewAllD=false">
+
+      <div class="card">
+        <ion-item>
+          <span class="col col-40">Sales: </span>
+          <span class="col col-40">{{item.total_sales}}</span>
+        </ion-item>
+
+
+        <ion-item>
+          <span class="col col-40">Target:</span>
+          <span class="col col-40">{{item.target}}</span>
+        </ion-item>
+
+
+        <ion-item>
+          <span class="col col-40">Performance:</span>
+          <span class="col col-40">{{item.performance}}</span>
+        </ion-item>
+
+
+        <ion-item>
+          <span class="col col-40">Rewards:</span>
+          <span class="col col-40">{{item.rewards}}</span>
+        </ion-item>
+
+
+        <ion-item>
+          <span class="col col-40">Due Period:</span>
+          <span class="col col-40">{{item.due}}</span>
+        </ion-item>
+
+      </div>
+
+      <!--<ion-item ng-repeat="item in sales" ng-show="sales_mn.length |limitTo viewAllD ? 500 : 5">
+        <h2>{{sales_mn.id}}</h2>
+        <p>{{sales_mn.id}}</p>
+      </ion-item>-->
+    </ion-list>
+
+  </ion-content>
+
+</ion-view>

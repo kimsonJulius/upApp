@@ -1,0 +1,67 @@
+<ion-view style="background-color: #f5f6fa; background-image: url('img/login-processes_2.png');  /*-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; */">
+    <ion-refresher
+            pulling-text="Pull to refresh..."
+            on-refresh="doRefresh()">
+    </ion-refresher>
+    <ion-tabs >
+        <ion-tab title="Daily">
+            <ion-tab-content>
+                <ion-content class="padding">
+                    <ion-list class="list">
+            <span class="row" ng-show="sales.length">
+              <span class="pull-left col col-33">Latest 5 Trans.</span>
+              <span class="pull-right col col-33 col-offset-33" ng-click="viewAllD=true">View All</span>
+            </span>
+                        <ion-item ng-init="viewAllD=false" ng-repeat="item in sales|limitTo: viewAllD ? 500 : 5" ng-show="sales.length">
+                            <h2>Sale Amount: {{item.paid_amount| currency:"Kshs. "}}</h2>
+                            <p>Customer: {{item.customer}}</p>
+                            <p>Paid by:{{item.rpaidby}}</p>
+
+                            <p>Date: {{item.created_at|date:'MM/dd/yyyy @ h:mma'}}</p>
+                        </ion-item>
+                        <ion-item ng-hide="sales.length" class="text-center">
+                            No sales.
+                        </ion-item>
+
+                    </ion-list>
+                </ion-content>
+
+            </ion-tab-content>
+        </ion-tab>
+        <ion-tab title="Weekly">
+            <ion-tab-content>
+                <ion-content class="padding">
+                    <ion-list class="list">
+                        <ion-item ng-init="viewAllW=false" ng-repeat="item in swk" ng-show="swk.length">
+                            <h2>Week: {{item[0]['key']}}</h2>
+                            <p><span>Date: {{item[0]['date']}}</span></p>
+                            <p><span>Amount: {{item[0]['total']| currency:"Kshs. "}}</span></p>
+                        </ion-item>
+                        <ion-item ng-hide="sales.length" class="text-center">
+                            No sales.
+                        </ion-item>
+                    </ion-list>
+                </ion-content>
+            </ion-tab-content>
+        </ion-tab>
+        <ion-tab title="Monthly">
+            <ion-tab-content>
+                <ion-content class="padding">
+                    <ion-list class="list">
+                        <ion-item ng-init="viewAllW=false" ng-repeat="item in smn" ng-show="smn.length">
+                            <h2>Month: {{item[0]['key']}}</h2>
+                            <p><span>Amount: {{item[0]['total']| currency:"Kshs. " }}</span></p>
+                        </ion-item>
+                        <ion-item ng-hide="sales.length" class="text-center">
+                            No sales.
+                        </ion-item>
+
+                    </ion-list>
+                </ion-content>
+            </ion-tab-content>
+        </ion-tab>
+    </ion-tabs>
+</ion-view>
