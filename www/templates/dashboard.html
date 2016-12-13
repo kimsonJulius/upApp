@@ -67,7 +67,7 @@
     <!--<button class="button button-clear button-small pull-right" style="background-color: #434858; color: #f5f6fa"
                      ng-click="add_product()">Add</button>-->
     <div class="bar bar-subfooter text-center">
-        <button class="button col"><i class="icon ion-flash-off"></i> Suspend</button>
+        <button class="button col" ng-click="suspend()"><i class="icon ion-flash-off"></i> Suspend</button>
         <button class="button col"  ng-click="add_product()" style=" background-color: #434858">
             <i class="icon ion-plus" style="color: #2befbe;"></i></button>
         <div class="col" style="background-color: #f5f6fa; color: #434858">Kshs.<span id="total" ng-model="sale.TotalAmount">{{getTotal()}}</span> </div>
@@ -75,7 +75,7 @@
 
     <div class="bar bar-footer text-center">
         <button class="button col" ng-click="closeThisOrder()"><i class="icon ion-android-cancel"></i> Cancel</button>
-        <button class="button col" ng-click="sellWithBarcode()"><i class="icon ion-ios-barcode"></i> Barcode</button>
+        <button class="button col" ng-click="goToOrders()"><i class="icon ion-ios-barcode"></i> Orders</button>
         <button class="col" ng-click="payForProds()"><i class="icon ion-card"></i> Payment </button>
     </div>
 </ion-view>

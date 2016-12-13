@@ -1,0 +1,28 @@
+<ion-modal-view title="">
+    <div class="bar bar-header bar-light" style="background-color: #434858">
+        <span><img src="img/favicon-32x32.png" alt="UP" height="30px" width="60px"
+                   style="padding-left: 30px"></span>
+        <p class="title text-center" style="color: #f5f6fa;">Check out</p>
+        <button class="button button-clear pull-right" ng-click="closePaymentMod()">
+            <i class="ion ion-ios-close" style="font-size: 30px; color: #f5f6fa"></i></button>
+    </div>
+    <ion-content style="background-image: url('img/pos_bg.jpg'); margin-top: 35px">
+        <div class="padding">
+
+        <div class="item" ng-repeat="item in suspendeds" ng-show="suspendeds.length" ng-click="unsuspend(item)">
+            <h2>{{item.suspend_note}}</h2>
+            <p>{{item.suspend_note}}</p>
+            <p>{{item.customer_name}}</p>
+            <p>Price: {{item.total_amount| currency:'Kshs. '}}</p>
+            <p>Total sale Items {{item.count}}</p>
+            <p></p>
+        </div>
+
+        <div class="item" ng-hide="suspendeds.length" style="background-color: rgba(255, 255, 9, 0.24)">
+            No Items Suspended
+        </div>
+
+        </div>
+
+    </ion-content>
+</ion-modal-view>

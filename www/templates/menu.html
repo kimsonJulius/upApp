@@ -12,7 +12,7 @@
         <span class="col" style="font-weight: bold; margin-left: 25px; margin-top: 5px">UZAPOINT</span>
 
 
-          <ion-buttons class="button button-clear col" style="text-align: right; margin-left: 10px">
+          <ion-buttons ng-click="listSuspendedSale()" class="button button-clear col" style="text-align: right; margin-left: 10px">
             <i class="icon ion-flash-off"></i></ion-buttons>
 
           <ion-buttons class="button button-clear col  col-offset-10 pull-right" style="text-align: right">
@@ -48,16 +48,16 @@
           Sales
           <i class="icon ion-ios-arrow-right" style=" font-size: 20px;"></i>
         </ion-item>
-        <ion-item class="myMenuItem item-icon-right item-icon-left"  menu-close href="#/app/inventory">
+        <!--<ion-item class="myMenuItem item-icon-right item-icon-left"  menu-close href="#/app/inventory">
           <i class="icon ion-ios-briefcase" style=" font-size: 20px;"></i>
           Inventory
           <i class="icon ion-ios-arrow-right" style=" font-size: 20px;"></i>
-        </ion-item>
-        <ion-item class="myMenuItem item-icon-right item-icon-left"  menu-close href="#/app/incoming">
+        </ion-item>-->
+        <!--<ion-item class="myMenuItem item-icon-right item-icon-left"  menu-close href="#/app/incoming">
           <i class="icon ion-pie-graph" style=" font-size: 20px;"></i>
           Transfer
           <i class="icon ion-ios-arrow-right" style=" font-size: 20px;"></i>
-        </ion-item>
+        </ion-item>-->
         <!--<ion-item  class="myMenuItem item-icon-right item-icon-left" menu-close href="#/app/orders">
           <i class="icon ion-ios-cart" style=" font-size: 20px;"></i>
           Orders
@@ -92,7 +92,7 @@
           <div class="row">
             <span class="col"><i class="icon ion-settings"></i> Settings</span>
             <span class="col"><i class="icon ion-help-buoy"></i> Support</span>
-            <span class="col"><i class="icon ion-log-out" ng-click="logout()"></i> Logout</span>
+            <span class="col" ng-click="logout()"><i class="icon ion-log-out" ></i> Logout</span>
           </div>
         </div>
 
