@@ -82,11 +82,9 @@
       <file leaf-file-name="settings.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/www/js/settings.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.09137056">
-              <caret line="3" column="43" selection-start-line="3" selection-start-column="43" selection-end-line="3" selection-end-column="43" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.030456852">
+              <caret line="1" column="35" selection-start-line="1" selection-start-column="35" selection-end-line="1" selection-end-column="35" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -775,11 +773,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www/js/settings.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09137056">
-          <caret line="3" column="43" selection-start-line="3" selection-start-column="43" selection-end-line="3" selection-end-column="43" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.030456852">
+          <caret line="1" column="35" selection-start-line="1" selection-start-column="35" selection-end-line="1" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
