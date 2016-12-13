@@ -460,7 +460,7 @@ angular.module('starter.controllers', [])
                     var total=0; var date=0;
                     for(var i=0; i<data.sales_mn[key].length;i++){//each week..
                         console.info(data.sales_mn[key][i]);
-                        total += data.sales_mn[key][i]['total_price'];
+                        total += data.sales_mn[key][i]['total'];
                         date = data.sales_mn[key][i]['created_at'];
                     }
 
