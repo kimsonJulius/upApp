@@ -50,7 +50,7 @@ angular.module('starter', ['ionic', 'starter.controllers','ngAnimate','toastr'])
           url: '/app',
           abstract: true,
           templateUrl: 'templates/menu.html',
-          /*controller: 'AppCtrl'*/
+          controller: 'AppCtrl'
       })
 
       .state('app.incoming',{
@@ -152,6 +152,16 @@ angular.module('starter', ['ionic', 'starter.controllers','ngAnimate','toastr'])
               'menuContent':{
                   controller:'customerController',
                   templateUrl:'templates/customers.html'
+              }
+          }
+      })
+      //show all the orders
+      .state('app.orders',{
+          url:'/orders',
+          views:{
+              'menuContent':{
+                  controller:'orderController',
+                  templateUrl:'templates/orders.html'
               }
           }
       });

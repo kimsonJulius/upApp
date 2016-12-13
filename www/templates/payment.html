@@ -8,7 +8,7 @@
     </div>
     <ion-content style="background-image: url('img/pos_bg.jpg'); margin-top: 35px">
         <form ng-submit="sellProds(sale)" class="card" style="padding-top: 10px">
-            <div class="list">
+            <div class="list"  ng-hide="print==1">
                 <div class="item-input-inset item item-input item-stacked-label">
                     <span class="input-label">Sale Note:</span>
                     <label>
@@ -102,7 +102,67 @@
                     <button class="button button-block btn-myButton" type="submit" >
                         <i class="ion ion-ios-paperplane"></i>&nbsp;Submit</button>
                 </label>
+
+            </div>
+            <div ng-show="print==1">
+                <div class="card" style="padding-top: 10px;">
+                    <div class="padding">
+                        <h2>UzaPoint</h2>
+                        <p>PO. Box 4916 00506, Nairobi</p>
+                        <p>Date: {{date | date:'yyyy-MM-dd'}}</p>
+                        <p>RECEIPT</p>
+                    </div>
+                    <div class="padding" style="text-align: left">
+                        <p class="row" ng-repeat="item in shoppingList">
+                            <span class="col">{{item.item_name}}</span>
+                            <span class="col">Unit Price: {{item.product_price| currency: 'Kshs. '}}</span>
+                            <span class="col">x {{item.quantity}}</span>
+                            <span class="col">Price: {{item.quantity * item.product_price | currency: 'Kshs. '}}</span>
+                        </p>
+                    </div>
+                    <div class="padding" style="text-align: left">
+                        <p>
+                            <span class="col"></span>
+                            <span class="col"></span>
+                            <span class="col">Total Kshs. {{TotalAmount(shoppingList)}}</span>
+                        </p>
+                        <p>
+                            <button class="button  btn-myButton button-block">Print</button>
+                        </p>
+                    </div>
+                </div>
             </div>
         </form>
+
+        <!--
+         <div class="bar bar-header item-input-inset">
+             <label class="item-input-wrapper">
+                 <i class="icon ion-ios-search placeholder-icon"></i>
+                 <input type="search" placeholder="Search for customer" ng-model="searchProd">
+             </label>
+         </div>
+
+         <div class="card" style="padding-top: 10px;">
+             <h2>UzaPoint</h2>
+             <p>PO. Box 4916 00506, Nairobi</p>
+             <p>Date: {{{{Date.now() | date:'yyyy-MM-dd'}}}}</p>
+             <p>Receipt</p>
+             <div class="padding" style="text-align: left">
+                 <p ng-repeat="item in shoppingList">
+                     <span class="col">{{item.item_name}}</span>
+                     <span class="col">* {{item.quantity}}</span>
+                     <span class="col">Unit Price Kshs.{{item.product_price}}</span>
+                 </p>
+             </div>
+             <div class="padding" style="text-align: left">
+                 <p>
+                     <span class="col"></span>
+                     <span class="col"></span>
+                     <span class="col">Total Kshs. {{sale.TotalAmount}}</span>
+                 </p>
+             </div>
+         </div>
+        -->
+
     </ion-content>
 </ion-modal-view>

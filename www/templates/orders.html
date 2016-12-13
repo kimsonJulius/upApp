@@ -1,0 +1,10 @@
+<ion-view>
+    <ion-content class="padding">
+    <ion-item ng-repeat="item in orders">
+        <h2>{{item.product_name}}</h2>
+        <p>{{item.note}}</p>
+        <p>{{item.price | currency: 'Kshs '}}</p>
+        <p></p>
+    </ion-item>
+    </ion-content>
+</ion-view>

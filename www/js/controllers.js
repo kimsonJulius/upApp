@@ -1,6 +1,49 @@
 angular.module('starter.controllers', [])
 
 
+
+    //use this for the side-menu items
+    .controller('AppCtrl', function ($scope,$state, toastr, $http, $ionicModal) {
+        //logout users..
+        $scope.logout = function () {
+            sessionStorage.clear();
+            $state.go('login');
+            toastr.success('Logged out successfully');
+        };
+        ///the suspended sales
+        /*modal for changing customer..*/
+        $ionicModal.fromTemplateUrl('templates/suspended.html',{
+            scope:$scope,
+            animation:'slide-in-right'
+        }).then(function (suspended) {
+            $scope.suspended = suspended;
+        });
+
+        $scope.closePaymentMod = function () {
+            $scope.suspended.hide();
+        };
+
+        $scope.listSuspendedSale = function () {
+            //
+            $http({
+                url:url+'/listSuspendedSale/'+sessionStorage.user_id,
+                method:'GET'
+            }).success(function (data) {
+                //show modal and load suspended sales
+                $scope.suspended.show();
+                $scope.suspendeds = data.suspended;
+                console.info(data)
+            }).error(function (err) {
+                console.error(err);
+            })
+
+        };
+        $scope.unsuspend = function (item) {
+            console.info(item);
+            //load items from this suspended sale
+
+        }
+    })
 //login controller
     .controller('loginController', function ($scope, $http, $ionicLoading,toastr,$state) {
         $scope.loginRetailer = function (user) {
@@ -32,11 +75,36 @@ angular.module('starter.controllers', [])
         }
     })
     .controller('dashboardController', function ($scope, $http, $ionicLoading,toastr,$ionicModal,$ionicPopup,$state) {
-        $scope.logout = function () {
+        /*$scope.logout = function () {
             sessionStorage.clear();
             $state.go('login');
+        };*/
+        //suspend the sales
+        $scope.suspend = function () {
+          //record as sales suspended..
+            if(! $scope.sale.customer){
+                toastr.error('Please select a customer');
+                return;
+            }
+            if(!$scope.shoppingList.length){
+                toastr.error('Please add item to suspend');
+                return;
+            }
+            $http({
+                url:url+'/suspendSale/'+sessionStorage.user_id,
+                data:/*$scope.shoppingList*/{myData : $scope.sale,mysale: $scope.shoppingList},
+                method:'POST',
+                headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (data) {
+                if(data.status == 'success'){
+                    //clear the sale and sale list by reload
+                    window.location.reload(true);
+                }
+                console.info(data);
+            }).error(function (err) {
+                console.error(err);
+            })
         };
-
 
 
         //get the device location.
@@ -203,6 +271,7 @@ angular.module('starter.controllers', [])
             console.info($scope.shoppingList);
         };
         $scope.payForProds = function () {
+            $scope.print = 0;
             /*check if there is items in the shopping list*/
             if(! $scope.shoppingList.length){
                 toastr.error('Please add shopping list items');
@@ -286,6 +355,11 @@ angular.module('starter.controllers', [])
             }
         };*/
 
+        //go to view all orders
+        $scope.goToOrders = function () {
+            $state.go('app.orders')
+        };
+
 
         //sell products with barcode..
         $scope.sellWithBarcode = function () {
@@ -316,7 +390,18 @@ angular.module('starter.controllers', [])
             );
 
         };
-
+        //set date
+        $scope.date = new Date();
+        //compute sale total price
+        $scope.TotalAmount = function (shoppingList) {
+            var tot = 0;
+            console.info('the sale => ',shoppingList);
+            for(var i=0; i<shoppingList.length; i++)
+            {
+                tot = tot + parseFloat(shoppingList[i]['product_price']) * parseFloat(shoppingList[i]['quantity']);
+            }
+            return tot;
+        };
 
         $scope.removeShoppingList = function (item) {
             /*swipe to remove item*/
@@ -324,6 +409,7 @@ angular.module('starter.controllers', [])
             $scope.shoppingList.splice($scope.shoppingList.indexOf(item),1);
         };
         $scope.sellProds = function (data) {
+            //show receipt
             //validation..
             if($scope.sale.payBy == undefined || $scope.sale.payBy == ''){//payment option.
                 toastr.error('Please select paying options');
@@ -373,17 +459,19 @@ angular.module('starter.controllers', [])
                 method:'POST',
                 headers:{'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function (data) {
+                /**/
                 console.info(data);
                 //$scope.paymentModal.hide();
                 $ionicLoading.hide();
                 /*receipt preview..*/
-                $scope.recMl.show();
-
+                //$scope.recMl.show();
+                toastr.success('Successfully sold');
+                $scope.print =1;
             }).error(function (error) {
                 console.error(error);
                 toastr.error(error);
                 $ionicLoading.hide();
-                $scope.paymentModal.hide();
+                //$scope.paymentModal.hide();
             });
 
         };
@@ -478,7 +566,50 @@ angular.module('starter.controllers', [])
                 $scope.$broadcast('scroll.refreshComplete');
             })
         };
+        $ionicLoading.show();
+        $http({
+            url:url+'/loadSales/'+sessionStorage.user_id,
+            method:'GET'
+        }).success(function (data) {
+            $scope.sales = data.sales;//daily,,
+            //weekly
+            $scope.sales_wk = data.sales_wk;
+            //monthly
+            $scope.sales_mn = data.sales_mn;
+            $scope.swk = [];
+            $scope.smn = [];
+            for(var key in data.sales_wk){
+                var total=0; var date=0;
+                for(var i=0; i<data.sales_wk[key].length;i++){//each week..
+                    console.info(data.sales_wk[key][i]);
+                    total += data.sales_wk[key][i]['total_price'];
+                    date = data.sales_wk[key][i]['created_at'];
+                }
 
+                $scope.swk.push(Array({'total' : total,'date':date,'key':key}));
+            }console.info($scope.swk);
+
+
+            for(var key in data.sales_mn){
+                var total=0; var date=0;
+                for(var i=0; i<data.sales_mn[key].length;i++){//each week..
+                    console.info(data.sales_mn[key][i]);
+                    total += data.sales_mn[key][i]['total_price'];
+                    date = data.sales_mn[key][i]['created_at'];
+                }
+
+                $scope.smn.push(Array({'total' : total,'date':date,'key':key}));
+            }console.info($scope.smn);
+
+
+            $scope.sales_wk = data.sales_wk;
+            $ionicLoading.hide();
+            $scope.$broadcast('scroll.refreshComplete');
+        }).error(function (err) {
+            $ionicLoading.hide();
+            console.error(err);
+            toastr.error('check your internet connection and try again');
+        })
 
     })
     .controller('invController', function ($scope,$http,toastr,$ionicModal) {
@@ -627,24 +758,28 @@ angular.module('starter.controllers', [])
     })
     .controller('reportsController', function ($scope,$http,$ionicLoading) {
         $scope.doRefresh = function () {
+            $ionicLoading.show();
             $http({
                 url:url+'/loadReportSummary/'+sessionStorage.user_id,
                 method:'GET'
             }).success(function (data) {
+                $ionicLoading.hide();
                 $scope.item = data;
                 $scope.$broadcast('scroll.refreshComplete');
             });
 
         };
+        $ionicLoading.show();
         $http({
             url:url+'/loadReportSummary/'+sessionStorage.user_id,
             method:'GET'
         }).success(function (data) {
+            $ionicLoading.hide();
             $scope.item = data;
         });
 
         ///load
-        $ionicLoading.show();
+        /*$ionicLoading.show();
         $http({
             url:url+'/loadSalesWithTarget/'+sessionStorage.user_id,
             method:'GET'
@@ -655,7 +790,7 @@ angular.module('starter.controllers', [])
 
 
         $ionicLoading.hide();
-
+*/
     })
     .controller('incomingController', function ($scope,$http,$ionicLoading,toastr) {
         $scope.doRefresh = function () {
@@ -875,4 +1010,18 @@ angular.module('starter.controllers', [])
             $ionicLoading.hide();
             toastr.error('Check your internet connection')
         })
+    })
+    .controller('orderController', function ($http,$ionicLoading,$scope) {
+        $ionicLoading.show();
+        $http({
+            url:url+'/loadOrders/'+sessionStorage.user_id,
+            method:'GET'
+        }).success(function (data) {
+            $ionicLoading.hide();
+            console.info(data);
+            $scope.orders = data;
+        }).error(function (err) {
+            $ionicLoading.hide();
+            console.error(err);
+        });
     });
