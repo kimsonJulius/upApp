@@ -1,0 +1,94 @@
+<ion-view style="background-color: #f5f6fa">
+  <style>
+    .username::-webkit-input-placeholder {
+      color: #434858;
+    }
+
+    .username:-moz-placeholder { /* Firefox 18- */
+      color: #434858;
+    }
+
+    .username::-moz-placeholder {  /* Firefox 19+ */
+      color: #434858;
+    }
+
+    .username:-ms-input-placeholder {
+      color: #434858;
+    }
+
+    .password::-webkit-input-placeholder {
+      color: #434858;
+    }
+
+    .password:-moz-placeholder { /* Firefox 18- */
+      color: #434858;
+    }
+
+    .password::-moz-placeholder {  /* Firefox 19+ */
+      color: #434858;
+    }
+
+    .password:-ms-input-placeholder {
+      color: #434858;
+    }
+
+
+  </style>
+  <ion-content class=" padding" style=" background-image: url('img/login-processes_2.png'); -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; ">
+    <div style="text-align: center">
+      <img src="img/logo.svg" style=" height: 180px; width: 100%">
+    </div>
+
+    <form ng-submit="registerRetailer(user)" style="margin-top: 40px;">
+      <label class="item item-input"  style="border: #434858 1px solid;border-radius: 25px;/*margin-bottom: 5px;*/ background-color: transparent">
+        <span class="ion ion-person"></span> &nbsp; &nbsp; &nbsp;
+        <input type="text" class="username" autocomplete="off" ng-model="user.first_name"
+               placeholder="First Name" style="background-color: transparent; color: #434858">
+      </label>
+      <label class="item item-input"  style="border: #434858 1px solid;border-radius: 25px; background-color: transparent">
+        <span class="ion ion-person"></span> &nbsp; &nbsp; &nbsp;
+        <input type="text" class="username" autocomplete="off" ng-model="user.last_name"
+               placeholder="Last Name" style="background-color: transparent; color: #434858">
+      </label>
+      <label class="item item-input" style="border: #434858 1px solid;border-radius: 25px; margin-top: 5px; background-color: transparent; color: #434858">
+        <span class="icon ion-ios-briefcase"></span> &nbsp; &nbsp; &nbsp;
+        <input type="text" class="username" autocomplete="off" placeholder="Business Name" ng-model="user.business" style="background-color: transparent">
+      </label>
+
+      <label class="item-input item-select" style="margin-top: 10px;" ng-click="selectList()">
+        <div class="input-label">
+          Country
+        </div>
+        <select style="background-color: transparent" ng-model="user.country">
+          <option ng-repeat="country in countries">{{country}}</option>
+        </select>
+      </label>
+      <label class="item item-input" style="border: #434858 1px solid;border-radius: 25px; margin-top: 5px; background-color: transparent; color: #434858">
+        <span class="icon ion-ios-location"></span> &nbsp; &nbsp; &nbsp;
+        <input type="text" class="username" autocomplete="off" placeholder="Region" ng-model="user.region" style="background-color: transparent">
+      </label>
+      <label class="item-input item-select" style="margin-top: 10px;">
+        <div class="input-label">
+          Package
+        </div>
+        <select style="background-color: transparent" ng-model="user.package">
+          <option ng-repeat="item in packages" value="{{item.id}}">{{item.package_name}}</option>
+        </select>
+      </label>
+
+      <label class="item item-input" style="border: #434858 1px solid;border-radius: 25px; margin-top: 5px; background-color: transparent; color: #434858">
+        <span class="ion ion-email"></span> &nbsp; &nbsp; &nbsp;
+        <input type="email" class="username" autocomplete="off" placeholder="Email" ng-model="user.email" style="background-color: transparent">
+      </label>
+
+
+      <button class="button button-clear button-outline button-block " type="submit"
+                style="border: solid 1px #f5f6fa; color: #434858; background-color: #f5f6fa; border-radius: 25px;
+                margin-top: 10px">Register</button>
+    </form>
+
+  </ion-content>
+</ion-view>

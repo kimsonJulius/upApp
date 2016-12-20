@@ -42,25 +42,20 @@
       <img src="img/logo.svg" style=" height: 40%; width: 100%">
     </div>
 
-    <form ng-submit="loginRetailer(user)" style="margin-top:40%">
+    <form ng-submit="verifyPhone(phone)" style="margin-top:40%">
       <label class="item item-input"  style="border: #434858 1px solid;border-radius: 25px; background-color: transparent">
         <span class="ion ion-person"></span> &nbsp; &nbsp; &nbsp;
-        <input type="text" class="username" autocomplete="off" ng-model="user.username"
-               placeholder="Username" style="background-color: transparent; color: #434858">
+        <input type="tel" class="username" autocomplete="off" ng-model="phone"
+               placeholder="Phone Number" style="background-color: transparent; color: #434858">
       </label>
-      <label class="item item-input" style="border: #434858 1px solid;border-radius: 25px; margin-top: 5px; background-color: transparent; color: #434858">
-        <span class="ion ion-locked"></span> &nbsp; &nbsp; &nbsp;
-        <input type="password" class="password" autocomplete="off" placeholder="Pin" ng-model="user.pin" style="background-color: transparent">
-      </label>
-
         <button class="button button-clear button-outline button-block " type="submit"
                 style="border: solid 1px #f5f6fa; color: #434858; background-color: #f5f6fa; border-radius: 25px;
-                margin-top: 10px">Log In</button>
+                margin-top: 10px">Verify Phone Number</button>
     </form>
 
-        <a href="#/register" class="button button-clear button-outline button-block " type="button"
+        <a href="#/login" class="button button-clear button-outline button-block " type="button"
                 style="border: solid 1px #f5f6fa; color: #434858; background-color: #f5f6fa; border-radius: 25px;
-                margin-top: 10px">Sign Up</a>
+                margin-top: 10px">Login</a>
 
   </ion-content>
 </ion-view>

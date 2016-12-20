@@ -66,7 +66,16 @@ angular.module('starter.controllers', [])
                     sessionStorage.email = data.user.email;
                     sessionStorage.name = data.waiter.first_name +' '+ data.waiter.last_name;
                     sessionStorage.user_id = data.user.id;
-                    $state.go('app.dashboard');
+                    //load business and branch to session
+                    sessionStorage.business = data.business;
+                    sessionStorage.branch = data.branch;
+                    if(data.msg == 'Please verify your phone number')
+                    {//go to verify phone
+                        $state.go('verify')
+                    }else
+                    {
+                        $state.go('app.dashboard');
+                    }
                 }
             }).error(function () {
                 toastr.error('Check your internet connection and try again.');
@@ -74,11 +83,73 @@ angular.module('starter.controllers', [])
             })
         }
     })
+
+    //sign up
+    .controller('registerController', function ($scope, $state, $http, $ionicLoading, toastr,$ionicModal) {
+        //modal with countries list.
+        $ionicModal.fromTemplateUrl('templates/country.html',{
+            scope:$scope,
+            animation:'slide-in-right'
+        }).then(function (countryModal) {
+            $scope.countryModal = countryModal;
+        });
+
+        //load all countries
+        $scope.countries = ["Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegowina", "Botswana", "Bouvet Island", "Brazil", "British Indian Ocean Territory", "Brunei Darussalam", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Christmas Island", "Cocos (Keeling) Islands", "Colombia", "Comoros", "Congo", "Congo, the Democratic Republic of the", "Cook Islands", "Costa Rica", "Cote d'Ivoire", "Croatia (Hrvatska)", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands (Malvinas)", "Faroe Islands", "Fiji", "Finland", "France", "France Metropolitan", "French Guiana", "French Polynesia", "French Southern Territories", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guadeloupe", "Guam", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Heard and Mc Donald Islands", "Holy See (Vatican City State)", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran (Islamic Republic of)", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, Democratic People's Republic of", "Korea, Republic of", "Kuwait", "Kyrgyzstan", "Lao, People's Democratic Republic", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libyan Arab Jamahiriya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia, The Former Yugoslav Republic of", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Martinique", "Mauritania", "Mauritius", "Mayotte", "Mexico", "Micronesia, Federated States of", "Moldova, Republic of", "Monaco", "Mongolia", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Niue", "Norfolk Island", "Northern Mariana Islands", "Norway", "Oman", "Pakistan", "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Pitcairn", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russian Federation", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Seychelles", "Sierra Leone", "Singapore", "Slovakia (Slovak Republic)", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Georgia and the South Sandwich Islands", "Spain", "Sri Lanka", "St. Helena", "St. Pierre and Miquelon", "Sudan", "Suriname", "Svalbard and Jan Mayen Islands", "Swaziland", "Sweden", "Switzerland", "Syrian Arab Republic", "Taiwan, Province of China", "Tajikistan", "Tanzania, United Republic of", "Thailand", "Togo", "Tokelau", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks and Caicos Islands", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Virgin Islands (British)", "Virgin Islands (U.S.)", "Wallis and Futuna Islands", "Western Sahara", "Yemen", "Yugoslavia", "Zambia", "Zimbabwe"];
+        $scope.selectList = function () {
+            //show a modal for selecting from..
+            $scope.countryModal.show();
+        };
+        $scope.selectListHide = function () {
+            $scope.countryModal.hide();
+        };
+        $scope.changeCountrySelected = function (country) {
+            console.info($scope.user);
+            //$scope.user.country = country;
+            $scope.countryModal.hide();
+        };
+        //load packages
+        $http({
+            url:url+'/loadPackages',
+            method:'get'
+        }).success(function (data) {
+            $scope.packages = data.packages;
+        });
+        //register the new retailer
+        $scope.registerRetailer = function (data) {
+            //send the data to the server
+            $ionicLoading.show();
+            $http({
+                url:url+'/postRegisterRetailer',
+                method:'POST',
+                headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+                data:data
+            }).success(function (data) {
+                //the response..
+                if(data.status == 'success'){
+                    toastr.success(data.message,data.status);
+                }else if(data.status == 'error'){
+                    toastr.error(data.message,data.status);
+                }
+                //take the user to login page
+                $state.go('login');
+                $ionicLoading.hide();
+            })
+        }
+    })
+
+
     .controller('dashboardController', function ($scope, $http, $ionicLoading,toastr,$ionicModal,$ionicPopup,$state) {
         /*$scope.logout = function () {
             sessionStorage.clear();
             $state.go('login');
         };*/
+
+        $scope.business = sessionStorage.business;
+        $scope.branch = sessionStorage.branch;
+
+
+
         //suspend the sales
         $scope.suspend = function () {
           //record as sales suspended..
@@ -1024,4 +1095,46 @@ angular.module('starter.controllers', [])
             $ionicLoading.hide();
             console.error(err);
         });
+    })
+    .controller('verifyController', function ($state,$ionicLoading,$scope,$http,toastr) {
+        //load the number provided..
+
+        //post this number
+        $scope.verifyPhone = function (data) {
+            $http({
+                url:url + '/loadPhoneNumber/'+sessionStorage.user_id,
+                method:'POST',
+                headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+                data: {'phone':data},
+                success: function (data) {
+                    if(data.status == 'success')
+                    {//the verification code sent successfully
+                        $state.go('verify_code');
+                    }
+                    if(data.status == 'error'){
+                        toastr.error(data.msg);
+                    }
+                }
+            })
+        }
+    })
+    .controller('verify_codeController', function (toastr,$ionicLoading,$scope,$http,$state) {
+        $scope.verifyCode = function (data) {
+            $http({
+                url: url+'/postVerifyCode/'+sessionStorage.user_id,
+                method:"POST",
+                headers:{'Content-Type': 'application/x-www-form-urlencoded'},
+                data: {'code':data},
+                success: function (data) {
+                    if(data.status == 'success')
+                    {
+                        toastr.success('successfully verified your phone number');
+                        $state.go('app.dashboard');
+                    }else
+                    {
+                        toastr.error(data.msg);person
+                    }
+                }
+            })
+        }
     });

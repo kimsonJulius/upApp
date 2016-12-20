@@ -65,12 +65,32 @@ angular.module('starter', ['ionic', 'starter.controllers','ngAnimate','toastr'])
       })
 
 
+      /*verify phone number..*/
+  .state('verify',  {
+      url:'/verify',
+      controller:'verifyController',
+      templateUrl:'templates/verify.html'
+  })
+
+      /*verify phone code..*/
+  .state('verify_code',  {
+      url:'/verify_code',
+      controller:'verify_codeController',
+      templateUrl:'templates/verify_code.html'
+  })
+
 
 /*login*/
       .state('login',  {
         url:'/login',
         controller:'loginController',
         templateUrl:'templates/login.html'
+      })
+  /*sign up*/
+      .state('register',  {
+        url:'/register',
+        controller:'registerController',
+        templateUrl:'templates/register.html'
       })
       /*template url..*/
       .state('menu',{

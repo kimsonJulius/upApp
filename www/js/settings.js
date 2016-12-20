@@ -2,4 +2,5 @@
 //var url = 'http://localhost/job/new/uppublic/public/';
 //var url = 'http://sharpmyessay.com/mastermind/public/';
 //var url = 'http://upmtk.azurewebsites.net/';
-var url = 'http://updemo.info/pure/public/';
+var url = 'http://updemo.info/portal/public/';
+//var url = 'http://localhost/job/new/uppublic/public/';
