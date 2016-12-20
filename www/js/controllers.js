@@ -111,7 +111,7 @@ angular.module('starter.controllers', [])
         //load packages
         $http({
             url:url+'/loadPackages',
-            method:'get'
+            method:'GET'
         }).success(function (data) {
             $scope.packages = data.packages;
         });
@@ -1101,39 +1101,41 @@ angular.module('starter.controllers', [])
 
         //post this number
         $scope.verifyPhone = function (data) {
+            $ionicLoading.show();
             $http({
                 url:url + '/loadPhoneNumber/'+sessionStorage.user_id,
                 method:'POST',
                 headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-                data: {'phone':data},
-                success: function (data) {
-                    if(data.status == 'success')
-                    {//the verification code sent successfully
-                        $state.go('verify_code');
-                    }
-                    if(data.status == 'error'){
-                        toastr.error(data.msg);
-                    }
+                data: {'phone':data}
+            }).success(function (data) {
+                $ionicLoading.hide();
+                if(data.status == 'success')
+                {//the verification code sent successfully
+                    $state.go('verify_code');
+                }
+                if(data.status == 'error'){
+                    toastr.error(data.msg);
                 }
             })
         }
     })
     .controller('verify_codeController', function (toastr,$ionicLoading,$scope,$http,$state) {
         $scope.verifyCode = function (data) {
+            $ionicLoading.show();
             $http({
                 url: url+'/postVerifyCode/'+sessionStorage.user_id,
                 method:"POST",
                 headers:{'Content-Type': 'application/x-www-form-urlencoded'},
-                data: {'code':data},
-                success: function (data) {
-                    if(data.status == 'success')
-                    {
-                        toastr.success('successfully verified your phone number');
-                        $state.go('app.dashboard');
-                    }else
-                    {
-                        toastr.error(data.msg);person
-                    }
+                data: {'code':data}
+            }).success(function (data) {
+                $ionicLoading.hide();
+                if(data.status == 'success')
+                {
+                    $state.go('app.dashboard');
+                    toastr.success('successfully verified your phone number');
+                }else
+                {
+                    toastr.error(data.msg);
                 }
             })
         }
