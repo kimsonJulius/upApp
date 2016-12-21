@@ -9,13 +9,28 @@
         <!--The select inputs.-->
         <form ng-submit="SellProducts()" class="list">
             <div>
-                <div class="button-bar" style="height: 35px">
-                    <a class="button">{{business}}</a>
-                    <a class="button">{{branch}}</a>
+                <div class="row">
+                    <span class="col col-66" style="font-weight: bolder;
+                    text-align: center; font-size: larger">{{business}}</span>
+                    <span class="col col-33" style="font-size: smaller;font-style: italic">{{branch}}</span>
+                </div>
+
+<!--
+
+                <div class="row text-center">
+                    <span class="col col-40">{{business}}</span>
+                    <span class="col col-40">{{branch}}</span>
+                </div>
+-->
+                <!--<p style="text-align: center; height: 15px">
+                    <span class="col">{{sale.locationName|limitTo:24}}</span>
+                </p>-->
+               <!-- <div class="button-bar" >
+
                 </div>
                 <div class="button-bar" style="height: 35px">
                     <a class="button">{{sale.locationName|limitTo:24}}</a>
-                </div>
+                </div>-->
 
                 <label class="item item-input item-select" ng-click="changeCustomer()">
                     <div class="input-label">
@@ -28,20 +43,9 @@
                       <option ng-repeat="item in customers" value="item.id">{{item.first_name}} {{item.last_name}} </option>
                     </select>-->
                 </label>
-                <!--<label class="item item-input">
-                    <div class="input-label">
-                        Location:
-                    </div>
-                    <span>{{sale.locationName|limitTo:24}}</span>
-                </label>--><!--
-        <button class="button button-clear button-small pull-right" style="background-color: #434858; color: #f5f6fa">
-          Add</button>-->
 
 
-                <div class="item item-divider title" ng-show="shoppingList.length" style="background-color: transparent"></div>
-
-                <!--<p ng-repeat="item in shoppingList" class="padding">-->
-                <div class="list">
+                <div class="list" style="margin-top: 35px">
                     <ion-item class="row"  ng-repeat="item in shoppingList" style="max-height: 45px; width: 100%"
                               on-swipe-left="removeShoppingList(item)" on-hold="updateQShoppingList(item)">
                         <div class="col col-40">{{item.item_name|limitTo:13}}</div>

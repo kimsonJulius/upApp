@@ -7,13 +7,15 @@
       <ion-nav-buttons side="left">
         <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
         </button>
-        <span><img src="img/favicon-32x32.png" alt="UP" height="30px" width="60px"
-                   style="padding-left: 30px"></span>
-        <span class="col" style="font-weight: bold; margin-left: 25px; width: 100px; margin-top: 5px">UZAPOINT</span>
-
-
+          <span class="col"><img src="img/favicon-32x32.png" alt="UP" height="30px" width="60px"
+                                 style="padding-left: 30px"></span>
+          <span class="col" style="font-weight: bold; margin-left: 25px; width: 100px; margin-top: 5px">
+            UZAPOINT
+          </span>
+        <span class="col">
           <ion-buttons ng-click="listSuspendedSale()" class="button button-clear col" style="text-align: right; margin-left: 10px">
             <i class="icon ion-flash-off"></i></ion-buttons>
+        </span>
 
           <!--<ion-buttons class="button button-clear col  col-offset-10 pull-right" style="text-align: right">
             <i class="icon ion-android-notifications"></i></ion-buttons>-->
@@ -28,8 +30,8 @@
           <img src="img/profile.png" height="45px" width="45px" alt="">
         </span>
         <span class="col" style="padding-left: 25px">
-          <small style="font-weight: bold; color: #2befbe">Margret Wanjiru K.</small><br>
-          <small style="color: #f5f6fa">margret@gmail.com</small>
+          <small style="font-weight: bold; color: #2befbe">{{person.name}}</small><br>
+          <small style="color: #f5f6fa">{{person.email}}</small>
         </span>
       </div>
     </ion-header-bar>

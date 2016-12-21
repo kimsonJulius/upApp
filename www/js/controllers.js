@@ -4,6 +4,12 @@ angular.module('starter.controllers', [])
 
     //use this for the side-menu items
     .controller('AppCtrl', function ($scope,$state, toastr, $http, $ionicModal) {
+        //the user details
+        $scope.person = [];
+        $scope.person.name = sessionStorage.name;
+        $scope.person.email = sessionStorage.email;
+
+
         //logout users..
         $scope.logout = function () {
             sessionStorage.clear();
@@ -85,7 +91,29 @@ angular.module('starter.controllers', [])
     })
 
     //sign up
-    .controller('registerController', function ($scope, $state, $http, $ionicLoading, toastr,$ionicModal) {
+    .controller('registerController', function ($scope, $http, $ionicLoading, toastr,$ionicPopup, $ionicModal) {
+        //package desc
+        $scope.showPackageDesc = function () {
+          //
+            $ionicLoading.show();
+            $http({
+                url:url+'/loadPackageDesc/'+$scope.user.package,
+                method:'GET'
+            }).success(function (data) {
+                $ionicLoading.hide();
+               $ionicPopup.alert({
+                   title:data.package_name,
+                   template:data.description +
+                   '<p>at a cost of Kshs. '+data.amount+'</p>'
+               })
+            }).error(function (err) {
+                $ionicLoading.hide();
+                toastr.error('Check your internet connection and retry')
+            })
+        };
+
+
+        $scope.user = [];
         //modal with countries list.
         $ionicModal.fromTemplateUrl('templates/country.html',{
             scope:$scope,
@@ -104,9 +132,9 @@ angular.module('starter.controllers', [])
             $scope.countryModal.hide();
         };
         $scope.changeCountrySelected = function (country) {
-            console.info($scope.user);
-            //$scope.user.country = country;
+            $scope.user.country = country;
             $scope.countryModal.hide();
+            console.info($scope.user);
         };
         //load packages
         $http({
@@ -140,6 +168,94 @@ angular.module('starter.controllers', [])
 
 
     .controller('dashboardController', function ($scope, $http, $ionicLoading,toastr,$ionicModal,$ionicPopup,$state) {
+
+        $scope.add_sale_note = function () {
+            // An elaborate, custom popup
+            $ionicPopup.show({
+                template: '<textarea ng-model="sale.note" rows="2"></textarea>',
+                title: 'Add Sale Note',
+                //subTitle: 'Please use normal things',
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.sale.note) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                            } /*else {
+                             return $scope.data.wifi;
+                             }*/
+                        }
+                    }
+                ]
+            });
+        };
+
+
+//add discount..
+        $scope.add_sale_discount = function () {
+            // An elaborate, custom popup
+            $ionicPopup.show({
+                template: '<input type="text" ng-model="sale.discount">',
+                title: 'Add Sale discount',
+                //subTitle: 'Please use normal things',
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.sale.discount) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                            } /*else {
+                             return $scope.data.wifi;
+                             }*/
+                        }
+                    }
+                ]
+            });
+        };
+
+
+
+//add add_sale_tax..
+        $scope.add_sale_tax = function () {
+            // An elaborate, custom popup
+            $ionicPopup.show({
+                template: '<input type="text" ng-model="sale.tax">',
+                title: 'Add Sale Tax',
+                //subTitle: 'Please use normal things',
+                scope: $scope,
+                buttons: [
+                    { text: 'Cancel' },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.sale.tax) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                            } /*else {
+                             return $scope.data.wifi;
+                             }*/
+                        }
+                    }
+                ]
+            });
+        };
+
+
+        $scope.paidByChange = function () {
+            //changing the payment method
+
+        };
+
+
         /*$scope.logout = function () {
             sessionStorage.clear();
             $state.go('login');
@@ -208,14 +324,14 @@ angular.module('starter.controllers', [])
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
 
-        $scope.getItems = function () {
+        /*$scope.getItems = function () {
             var item_count = 0;
             var item_item_count = 0;
             for(var i=0; i<$scope.shoppingList.length; i++){
                 item_count += 1;
                 item_item_count += $scope.shoppingList[i].quantity;
             }return ' '+item_count+'('+item_item_count+')';
-        };
+        };*/
         $scope.sale = {};
         $scope.sale.user_id = sessionStorage.user_id;
         $scope.getTotal = function () {
@@ -310,8 +426,14 @@ angular.module('starter.controllers', [])
             url:url+'loadRetailersDashboard/'+sessionStorage.user_id,
             method:'GET'
         }).success(function (data) {
+            $scope.sale = [];
+            $scope.sale.customer = [];
             $scope.warehouses = data.warehouses;
             $scope.customers = data.customers;
+            if($scope.customers.length){
+                $scope.sale.customer = $scope.customers[0];
+                $scope.sale.customer.full_name = ($scope.customers[0]['first_name'])+' '+$scope.customers[0]['last_name'];
+            }
             $scope.products = data.products;
             $ionicLoading.hide();
         }).error(function () {
@@ -479,73 +601,6 @@ angular.module('starter.controllers', [])
             $scope.products.push(item);
             $scope.shoppingList.splice($scope.shoppingList.indexOf(item),1);
         };
-        $scope.sellProds = function (data) {
-            //show receipt
-            //validation..
-            if($scope.sale.payBy == undefined || $scope.sale.payBy == ''){//payment option.
-                toastr.error('Please select paying options');
-                return; //must select the payment options
-            }
-            //cash should pay the whole amount..
-            if($scope.sale.payBy == 'Cash' || $scope.sale.payBy == 'Cheque'
-                || $scope.sale.payBy == 'Mpesa' || $scope.sale.payBy == 'Airtel Money'){
-                //
-                if($scope.sale.totalPayable > $scope.sale.TotalAmount){
-                    toastr.error('Please pay the full amount');
-                    return;
-                }
-            }
-            //if mobile money..lazima trans. code
-            if($scope.sale.payBy == 'Mpesa' || $scope.sale.payBy == 'Airtel Money'){
-                if($scope.sale.trans_code == undefined || $scope.sale.trans_code == '')
-                {
-                    toastr.error('Please enter transaction code');
-                    return;
-                }
-            }
-            if($scope.sale.payBy == 'Cheque'){
-                if($scope.sale.cheque_no == undefined || $scope.sale.cheque_no == '')
-                {
-                    toastr.error('Please enter cheque number');
-                    return;
-                }
-            }
-            if($scope.sale.payBy == 'Credit'){
-                if($scope.sale.due_date == undefined || $scope.sale.due_date == '')
-                {
-                    toastr.error('Please set due date');
-                    return;
-                }
-            }
-            //select the customer
-            if($scope.sale.customer == undefined){
-                toastr.error('Please select a customer');
-                return;
-            }
-            //$scope.
-            $ionicLoading.show();
-            $http({
-                url:url+'/sellProds/'+sessionStorage.user_id,
-                data:/*$scope.shoppingList*/{myData : $scope.sale,mysale: $scope.shoppingList},
-                method:'POST',
-                headers:{'Content-Type': 'application/x-www-form-urlencoded'}
-            }).success(function (data) {
-                /**/
-                console.info(data);
-                //$scope.paymentModal.hide();
-                $ionicLoading.hide();
-                /*receipt preview..*/
-                //$scope.recMl.show();
-                toastr.success('Successfully sold');
-                $scope.print =1;
-            }).error(function (error) {
-                console.error(error);
-                toastr.error(error);
-                $ionicLoading.hide();
-                //$scope.paymentModal.hide();
-            });
-
-        };
         /*cancel order*/
         $scope.cancelOrder = function () {
             //
@@ -569,8 +624,21 @@ angular.module('starter.controllers', [])
         //close customers modal
         $scope.closeCustomerList = function () {
             $scope.customerModal.hide();
+        };
+        $scope.sellProds = function (data) {
+            console.info(data);
+            return;
+            $http({
+                url:url+'/sellProds/'+sessionStorage.user_id,
+                data:{myData : data,mysale: $scope.shoppingList},
+                method:'POST',
+                headers:{'Content-Type': 'application/x-www-form-urlencoded'}
+            }).success(function (data) {
+                console.info(data);
+            }).error(function (error) {
+                toastr.error('Error contacting the server. Retry');
+            })
         }
-
     })
     .controller('menuController', function () {
 
@@ -1116,7 +1184,10 @@ angular.module('starter.controllers', [])
                 if(data.status == 'error'){
                     toastr.error(data.msg);
                 }
-            })
+            }).error(function (data) {
+                $ionicLoading.hide();
+                toastr.error('Check your internet')
+            });
         }
     })
     .controller('verify_codeController', function (toastr,$ionicLoading,$scope,$http,$state) {

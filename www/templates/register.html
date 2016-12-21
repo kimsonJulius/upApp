@@ -48,7 +48,7 @@
         <input type="text" class="username" autocomplete="off" ng-model="user.first_name"
                placeholder="First Name" style="background-color: transparent; color: #434858">
       </label>
-      <label class="item item-input"  style="border: #434858 1px solid;border-radius: 25px; background-color: transparent">
+      <label class="item item-input"  style="border: #434858 1px solid;border-radius: 25px; margin-top: 5px; background-color: transparent; color: #434858">
         <span class="ion ion-person"></span> &nbsp; &nbsp; &nbsp;
         <input type="text" class="username" autocomplete="off" ng-model="user.last_name"
                placeholder="Last Name" style="background-color: transparent; color: #434858">
@@ -58,14 +58,21 @@
         <input type="text" class="username" autocomplete="off" placeholder="Business Name" ng-model="user.business" style="background-color: transparent">
       </label>
 
-      <label class="item-input item-select" style="margin-top: 10px;" ng-click="selectList()">
+      <label class="item item-input" style="border: #434858 1px solid;border-radius: 25px; margin-top: 5px; background-color: transparent; color: #434858">
+        <span class="icon ion-ios-briefcase"></span> &nbsp; &nbsp; &nbsp;
+        <input type="text" class="username" autocomplete="off" placeholder="Select Country"
+               ng-model="user.country" ng-click="selectList()" style="background-color: transparent">
+      </label>
+
+
+      <!--<label class="item-input item-select" style="margin-top: 10px;" ng-click="selectList()">
         <div class="input-label">
           Country
         </div>
         <select style="background-color: transparent" ng-model="user.country">
           <option ng-repeat="country in countries">{{country}}</option>
         </select>
-      </label>
+      </label>-->
       <label class="item item-input" style="border: #434858 1px solid;border-radius: 25px; margin-top: 5px; background-color: transparent; color: #434858">
         <span class="icon ion-ios-location"></span> &nbsp; &nbsp; &nbsp;
         <input type="text" class="username" autocomplete="off" placeholder="Region" ng-model="user.region" style="background-color: transparent">
@@ -74,8 +81,9 @@
         <div class="input-label">
           Package
         </div>
-        <select style="background-color: transparent" ng-model="user.package">
-          <option ng-repeat="item in packages" value="{{item.id}}">{{item.package_name}}</option>
+        <select style="background-color: transparent" ng-model="user.package" ng-change="showPackageDesc()">
+          <option value="">-Select Package -</option>
+          <option ng-repeat="item in packages" value="{{item.id}}" ng-selected>{{item.package_name}}</option>
         </select>
       </label>
 

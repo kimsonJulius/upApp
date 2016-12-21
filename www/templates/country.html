@@ -19,9 +19,9 @@
                 <div class="col" ng-repeat="item in countries|filter:searchCont" ng-click="changeCountrySelected(item)">
                         <p>{{item}}</p>
                 </div>
-                <div class="list padding" ng-show="!customers.length">
+                <div class="list padding" ng-hide="customers.length">
                     <span class="ion ion-android-warning">
-                        There is not registered customer.
+                        No country that matches your match.
                     </span>
                 </div>
             </div>
