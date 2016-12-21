@@ -20,27 +20,25 @@
                     <div class="input-label">
                         Paying By
                     </div>
-                    <select ng-model="sale.paidBy" ng-change="paidByChange()">
+                    <select ng-model="sale.paidBy"><!--the selected method should determine the trans. code-->
                         <option value="Cash" ng-selected=true >Cash</option>
                         <option value="Credit">Credit</option>
                         <option value="Cheque">Cheque</option>
                         <option value="Mpesa">Mpesa</option>
                         <option value="Airtel Money">Airtel Money</option>
                     </select>
-                   <!-- <select ng-model="sale.payBy" ng-change="changePayment()">
-                        <option value="Cash">Cash</option>
-                        <option value="Credit">Credit</option>
-                        <option value="Cheque">Cheque</option>
-                        <option value="Mpesa">Mpesa</option>
-                        <option value="Airtel Money">Airtel Money</option>
-                    </select>-->
                 </label>
                 <!-- || sale.paidBy==Cheque-->
-                <div class="item item-input" ng-hide = "sale.paidBy==Cash">
-                    <span class="input-label">Trans. Code</span><!--ng-model="sale.paid"--><!--ng-value="TotalAmount()"-->
+                <div class="item item-input"  ng-show="sale.paidBy == 'Mpesa' ||
+                sale.paidBy == 'Airtel Money' || sale.paidBy ==''">
+                    <span class="input-label">Trans. Code</span>
                     <span><input type="text"  ng-model="sale.transCode" placeholder="Optional"></span>
                 </div>
-
+                <!--The cheque no.-->
+                <div class="item item-input"  ng-show="sale.paidBy == 'Cheque'">
+                    <span class="input-label">Cheque No.</span>
+                    <span><input type="text"  ng-model="sale.cheque" placeholder="Optional"></span>
+                </div>
 
                 <div class="item item-input">
                     <span class="input-label">Paid Amount</span><!--ng-model="sale.paid"--><!--ng-value="TotalAmount()"-->
@@ -59,7 +57,7 @@
                     <label class="item-input-wrapper col"  ng-show="getDueAmount()>0" style="width: 45%; margin-left: 2%">
                         <input type="text" placeholder="Due Amount" readonly ng-value="getDueAmount()">
                     </label>
-                    <label class="item-input-wrapper col"  ng-show="getDueAmount()<0" style="width: 45%; margin-left: 2%">
+                    <label class="item-input-wrapper col"  ng-show="getDueAmount()<=0" style="width: 45%; margin-left: 2%">
                         <input type="text" placeholder="Due Amount" readonly ng-value="getBalance()">
                     </label>
                 </div>

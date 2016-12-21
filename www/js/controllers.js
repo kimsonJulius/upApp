@@ -246,17 +246,6 @@ angular.module('starter.controllers', [])
             });
         };
 
-
-        $scope.paidByChange = function () {
-            //changing the payment method
-        };
-
-
-        /*$scope.logout = function () {
-            sessionStorage.clear();
-            $state.go('login');
-        };*/
-
         $scope.business = sessionStorage.business;
         $scope.branch = sessionStorage.branch;
 
@@ -313,10 +302,10 @@ angular.module('starter.controllers', [])
         // onError Callback receives a PositionError object
         //
         function onError(error) {
-            alert('code: '    + error.code    + '\n' +
-                'message: ' + error.message + '\n');
+            toastr.error('Error getting the device location');
+            /*alert('code: '    + error.code    + '\n' +
+                'message: ' + error.message + '\n');*/
         }
-
         navigator.geolocation.getCurrentPosition(onSuccess, onError);
 
 
@@ -330,14 +319,18 @@ angular.module('starter.controllers', [])
         };*/
         //$scope.sale = [];
         $scope.sale.user_id = sessionStorage.user_id;
+
         $scope.getTotal = function () {
             var total = 0;
             var cost = 0;
-            for(var i=0; i<$scope.shoppingList.length; i++){
-                //calculate the selling price
-                total += $scope.shoppingList[i].product_price * $scope.shoppingList[i].quantity;
-                //calculate the cost price..
-                cost += $scope.shoppingList[i].product_cost * $scope.shoppingList[i].quantity;
+            if($scope.shoppingList.length)
+            {
+                for(var i=0; i<$scope.shoppingList.length; i++){
+                    //calculate the selling price
+                    total += $scope.shoppingList[i].product_price * $scope.shoppingList[i].quantity;
+                    //calculate the cost price..
+                    cost += $scope.shoppingList[i].product_cost * $scope.shoppingList[i].quantity;
+                }
             }
             //the total sale price is
             $scope.sale.cost = cost;
@@ -361,7 +354,6 @@ angular.module('starter.controllers', [])
             $scope.sale.totalPayable = total;
             return total;
         };
-
         $scope.getDueAmount = function () {
             if($scope.sale.TotalAmount == undefined){
                 $scope.sale.TotalAmount = '';
@@ -369,7 +361,6 @@ angular.module('starter.controllers', [])
             $scope.sale.dueAmount = $scope.getTotal()-$scope.sale.TotalAmount;
             return   $scope.getTotal()-$scope.sale.TotalAmount;
         };
-
         $scope.getBalance = function () {
             if($scope.sale.TotalAmount == undefined){
                 $scope.sale.TotalAmount = '';
@@ -413,9 +404,6 @@ angular.module('starter.controllers', [])
         }).then(function (customerModal) {
             $scope.customerModal = customerModal;
         });
-
-
-
 
         $ionicLoading.show();
         $http({
@@ -466,7 +454,7 @@ angular.module('starter.controllers', [])
                 toastr.error('Please add shopping list items');
                 return;
             }
-
+            $scope.sale.TotalAmount = $scope.getTotal();
             $scope.paymentModal.show();
         };
         $scope.addQShoppingList = function (item) {
@@ -623,7 +611,6 @@ angular.module('starter.controllers', [])
         };
         $scope.sellProds = function () {
             //prevent credit for non-credit payment
-            console.info($scope.sale,$scope.shoppingList);
             if($scope.sale.paidBy != 'Credit')
             {
                 if($scope.sale.TotalAmount < $scope.sale.totalPayable)
@@ -632,9 +619,12 @@ angular.module('starter.controllers', [])
                     return;
                 }
             }
+
+            var d = angular.extend({},$scope.sale, {mySale: $scope.shoppingList});
+
             $http({
                 url:url+'/sellProds/'+sessionStorage.user_id,
-                data : {myData : $scope.sale, mysale : $scope.shoppingList},
+                data : d,
                 method:'POST',
                 headers:{'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function (data) {
@@ -645,9 +635,15 @@ angular.module('starter.controllers', [])
                 }
             }).error(function (error) {
                 toastr.error('Error contacting the server. Retry',error);
-            })
+            });
         }
     })
+
+
+
+
+
+
     .controller('menuController', function () {
 
     })
