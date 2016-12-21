@@ -168,7 +168,7 @@ angular.module('starter.controllers', [])
 
 
     .controller('dashboardController', function ($scope, $http, $ionicLoading,toastr,$ionicModal,$ionicPopup,$state) {
-
+        $scope.sale = {};
         $scope.add_sale_note = function () {
             // An elaborate, custom popup
             $ionicPopup.show({
@@ -193,7 +193,6 @@ angular.module('starter.controllers', [])
                 ]
             });
         };
-
 
 //add discount..
         $scope.add_sale_discount = function () {
@@ -220,8 +219,6 @@ angular.module('starter.controllers', [])
                 ]
             });
         };
-
-
 
 //add add_sale_tax..
         $scope.add_sale_tax = function () {
@@ -252,7 +249,6 @@ angular.module('starter.controllers', [])
 
         $scope.paidByChange = function () {
             //changing the payment method
-
         };
 
 
@@ -332,7 +328,7 @@ angular.module('starter.controllers', [])
                 item_item_count += $scope.shoppingList[i].quantity;
             }return ' '+item_count+'('+item_item_count+')';
         };*/
-        $scope.sale = {};
+        //$scope.sale = [];
         $scope.sale.user_id = sessionStorage.user_id;
         $scope.getTotal = function () {
             var total = 0;
@@ -625,18 +621,30 @@ angular.module('starter.controllers', [])
         $scope.closeCustomerList = function () {
             $scope.customerModal.hide();
         };
-        $scope.sellProds = function (data) {
-            console.info(data);
-            return;
+        $scope.sellProds = function () {
+            //prevent credit for non-credit payment
+            console.info($scope.sale,$scope.shoppingList);
+            if($scope.sale.paidBy != 'Credit')
+            {
+                if($scope.sale.TotalAmount < $scope.sale.totalPayable)
+                {
+                    toastr.error('Please pay the full amount');
+                    return;
+                }
+            }
             $http({
                 url:url+'/sellProds/'+sessionStorage.user_id,
-                data:{myData : data,mysale: $scope.shoppingList},
+                data : {myData : $scope.sale, mysale : $scope.shoppingList},
                 method:'POST',
                 headers:{'Content-Type': 'application/x-www-form-urlencoded'}
             }).success(function (data) {
-                console.info(data);
+                if(data.status == 'success'){
+                    //
+                    toastr.success('Successfully recorded sale');
+                    $scope.print =1;
+                }
             }).error(function (error) {
-                toastr.error('Error contacting the server. Retry');
+                toastr.error('Error contacting the server. Retry',error);
             })
         }
     })
